@@ -1,7 +1,12 @@
-from sqlalchemy import create_engine
+# --- Third-party
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
+
+# --- Standard library
+from typing import Dict, Optional
+
+# --- Local application
 from app.config import settings
-from pathlib import Path
 
 engine = create_engine(settings.DATABASE_URL)
 
@@ -16,4 +21,23 @@ def get_db():
         yield db
     finally:
         db.close()
+
+def verify_db_status() -> Dict[str, Optional[str]]:
+    """
+    Verify database connection by executing a SQL statement. 
+    """
+    db_error = None
+
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        db_status = "OK"
+    except Exception as e:
+        db_status = "unreachable"
+        db_error = str(e)
+
+    return {
+        "db": db_status,
+        "error": db_error,
+    }
 
