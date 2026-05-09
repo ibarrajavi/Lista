@@ -1,13 +1,18 @@
+# --- Third-party
 from pydantic import BaseModel, ConfigDict
+
+# --- Standard library
 from datetime import datetime
+from uuid import UUID
+
 
 class ListCreateRequest(BaseModel):
     name: str = "New list"
 
+
 class ListResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    
-    id: int
+
+    id: UUID
     name: str
     created_at: datetime
-

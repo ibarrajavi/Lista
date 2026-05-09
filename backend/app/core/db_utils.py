@@ -1,4 +1,7 @@
+# --- Third-party
 from sqlalchemy.orm import Session
+
+# --- Standard library
 from typing import Any
 
 class DatabaseUtils:
@@ -8,7 +11,7 @@ class DatabaseUtils:
     def db_get(
             self,
             model,
-            record_id: int,
+            record_id: Any,
             model_name: str = "Record"
     ) -> Any:
         """
@@ -42,6 +45,7 @@ class DatabaseUtils:
             self.db.add(instance)
             self.db.commit()
             self.db.refresh(instance)
+            return instance
         except Exception as e:
             self.db.rollback()
             raise RuntimeError(f"Creation failed: {str(e)}")
