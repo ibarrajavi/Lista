@@ -1,111 +1,118 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import "tailwindcss";
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+/* ─── DARK MODE ─────────────────────────────────────────────────────────────
+   Toggle by adding/removing class="dark" on <html>
+   ─────────────────────────────────────────────────────────────────────────── */
+@variant dark (&:where(.dark, .dark *));
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ─── DESIGN TOKENS ─────────────────────────────────────────────────────────
+   All custom utilities below (bg-bg, text-ink, border-hairline, etc.)
+   resolve to these values.
+   ─────────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Colors — light (default) */
+  --color-bg:           #FAFAF9;
+  --color-elev:         #FFFFFF;
+  --color-soft:         #F4F4F2;
+  --color-hover:        #EFEFEC;
+  --color-hairline:     #E6E5E0;
+  --color-hairline-2:   #EFEEEA;
+  --color-ink:          #161514;
+  --color-ink-muted:    #6B6963;
+  --color-ink-faint:    #A19E96;
+  --color-accent:       #1B1A19;
+  --color-accent-soft:  #EAE9E5;
+  --color-danger:       #C44848;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+  /* Colors — dark (swapped in via dark: variant) */
+  --color-bg-dark:          #131211;
+  --color-elev-dark:        #1B1A18;
+  --color-soft-dark:        #232120;
+  --color-hover-dark:       #2A2826;
+  --color-hairline-dark:    #2D2B28;
+  --color-ink-dark:         #F2F1ED;
+  --color-ink-muted-dark:   #A6A39C;
+  --color-ink-faint-dark:   #6B6863;
+  --color-accent-dark:      #F2F1ED;
+  --color-accent-soft-dark: #2A2826;
+
+  /* Typography */
+  --font-sans:   'Inter', system-ui, sans-serif;
+  --font-serif:  'Instrument Serif', 'Times New Roman', serif;
+
+  --font-size-meta: 12px;
+  --font-size-task: 13px;
+  --font-size-body: 14px;
+  --font-size-card: 15px;
+  --font-size-h1:   34px;
+
+  --line-height-meta: 1.4;
+  --line-height-task: 1.45;
+  --line-height-body: 1.45;
+  --line-height-card: 1.3;
+  --line-height-h1:   1.05;
+
+  --letter-spacing-card: -0.005em;
+  --letter-spacing-h1:   -0.01em;
+
+  /* Border radii */
+  --radius-check: 4px;
+  --radius-chip:  4px;
+  --radius-row:   6px;
+  --radius-ctrl:  8px;
+  --radius-card:  10px;
+  --radius-modal: 12px;
+
+  /* Shadows */
+  --shadow-card:      0 1px 0 rgba(22,21,20,0.04), 0 1px 2px rgba(22,21,20,0.04);
+  --shadow-pop:       0 8px 24px -8px rgba(22,21,20,0.18);
+  --shadow-card-dark: 0 1px 0 rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-pop-dark:  0 12px 36px -12px rgba(0,0,0,0.7);
+
+  /* Transition durations */
+  --duration-120: 120ms;
+  --duration-180: 180ms;
+  --duration-250: 250ms;
+}
+
+/* ─── BASE ───────────────────────────────────────────────────────────────────
+   OpenType features applied body-wide.
+   ─────────────────────────────────────────────────────────────────────────── */
+@layer base {
+  body {
+    font-feature-settings: 'ss01', 'cv11';
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+/* ─── KEYFRAMES ──────────────────────────────────────────────────────────────
+   draw-check: checkbox tick stroke animation
+   pop-in:     dropdown / menu entrance
+   ─────────────────────────────────────────────────────────────────────────── */
+@layer utilities {
+  @keyframes draw-check {
+    to { stroke-dashoffset: 0; }
   }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  @keyframes pop-in {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
   }
-}
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  .check-stroke {
+    animation: draw-check 250ms ease forwards;
   }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+
+  .menu-pop {
+    animation: pop-in 120ms ease;
   }
-}
-p {
-  margin: 0;
-}
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  @media print {
+    *, *::before, *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+    .check-stroke {
+      stroke-dashoffset: 0 !important;
+    }
+  }
 }
