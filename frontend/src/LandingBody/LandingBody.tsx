@@ -1,4 +1,6 @@
-import React from "react";
+// import React from "react";
+
+import { Link } from "react-router-dom";
 
 
 function LandingBody() {
@@ -25,9 +27,11 @@ function LandingBody() {
                         Create your first Lista
                     </button>
                     
-                    <button className="mx-3 outline-solid outline-1 outline-hairline bg-elev font-sans text-[13px] font-normal text-[#161514] py-2 px-[14px] rounded-ctrl rounded-[8px] cursor-pointer">
+                    <Link
+                        to="/login" 
+                        className="mx-3 outline-solid outline-1 outline-hairline bg-elev font-sans text-[13px] font-normal text-[#161514] py-2 px-[14px] rounded-ctrl rounded-[8px] cursor-pointer">
                         Login
-                    </button>
+                    </Link>
                 </li>
                 </ul>
             
